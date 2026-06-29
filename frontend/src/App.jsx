@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const API_BASE = window.location.port === '5173' ? 'http://localhost:5000/api' : '/api';
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? (window.location.port === '5173' ? 'http://localhost:5000/api' : '/api')
+  : (import.meta.env.VITE_API_URL || 'http://localhost:5000/api');
 
 function App() {
   // Navigation
