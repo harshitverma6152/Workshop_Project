@@ -1,0 +1,90 @@
+{
+  "config": {
+    "geminiApiKey": "YOUR_GEMINI_API_KEY",
+    "mockMode": false
+  },
+  "documents": [],
+  "chunks": [],
+  "chatSessions": [
+    {
+      "id": "session_1782754688467",
+      "messages": [
+        {
+          "id": "msg_user_1782754692114",
+          "role": "user",
+          "content": "hello",
+          "timestamp": "2026-06-29T17:38:12.114Z"
+        },
+        {
+          "id": "msg_1782754692114",
+          "role": "assistant",
+          "content": "No relevant text sections were found in matching document databases to answer this question. Please make sure the documents are uploaded and processed successfully.",
+          "citations": [],
+          "timestamp": "2026-06-29T17:38:12.114Z"
+        }
+      ]
+    },
+    {
+      "id": "session_1782754774711",
+      "messages": []
+    },
+    {
+      "id": "session_1782754820750",
+      "messages": [
+        {
+          "id": "msg_user_1782754820763",
+          "role": "user",
+          "content": "What is the notice period for terminating a vendor contract?",
+          "timestamp": "2026-06-29T17:40:20.763Z"
+        },
+        {
+          "id": "msg_1782754820763",
+          "role": "assistant",
+          "content": "No relevant text sections were found in matching document databases to answer this question. Please make sure the documents are uploaded and processed successfully.",
+          "citations": [],
+          "timestamp": "2026-06-29T17:40:20.763Z"
+        }
+      ]
+    },
+    {
+      "id": "session_1782755766655",
+      "messages": []
+    },
+    {
+      "id": "session_1782756255994",
+      "messages": []
+    },
+    {
+      "id": "session_1782756292457",
+      "messages": []
+    },
+    {
+      "id": "session_1782756573269",
+      "messages": []
+    }
+  ],
+  "agentTasks": [
+    {
+      "id": "task_1782754851907",
+      "instruction": "Compare renewal and liability parameters across all contracts",
+      "status": "failed",
+      "logs": [
+        {
+          "step": 1,
+          "type": "thought",
+          "title": "Formulating Analytical Plan",
+          "detail": "User requested: \"Compare renewal and liability parameters across all contracts\". I will parse local databases, find target files, execute similarity search across documents, and generate a synthesized comparison report.",
+          "timestamp": "2026-06-29T17:40:51.909Z"
+        },
+        {
+          "step": 2,
+          "type": "thought",
+          "title": "Corpus Error",
+          "detail": "Cannot run tool calls because no files are registered in the system.",
+          "timestamp": "2026-06-29T17:40:51.910Z"
+        }
+      ],
+      "finalAnswer": "#### Execution Failed\nPlease upload at least one document (contract, policy, or report) to let the Agent run comparison analysis."
+    }
+  ]
+}
