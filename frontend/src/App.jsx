@@ -514,10 +514,10 @@ function App() {
     const parseInline = (str) => {
       if (typeof str !== 'string') return str;
 
-      const boldRegex = /\*\*(.*?)\*\*/g;
+      // Fresh regex each call to avoid /g flag lastIndex persistence
       const citationRegex = /\(Source\s+(\d+),\s+Page\s+(\d+)\)/g;
       
-      let tempParts = [];
+      const tempParts = [];
       let lastIdx = 0;
       let match;
       
@@ -541,18 +541,21 @@ function App() {
       }
 
       const finalElements = [];
-      tempParts.forEach((part, pIdx) => {
+      tempParts.forEach((part) => {
+
         if (part.type === 'text') {
+          const content = part.content;
+          // Use a new regex instance each call to avoid lastIndex issues with /g flag
+          const boldRegexLocal = /\*\*(.*?)\*\*/g;
+          const boldParts = [];
           let bMatch;
           let bLastIdx = 0;
-          const content = part.content;
-          const boldParts = [];
-          while ((bMatch = boldRegex.exec(content)) !== null) {
+          while ((bMatch = boldRegexLocal.exec(content)) !== null) {
             if (bMatch.index > bLastIdx) {
               boldParts.push(content.substring(bLastIdx, bMatch.index));
             }
             boldParts.push(<strong key={`b_${bMatch.index}`}>{bMatch[1]}</strong>);
-            bLastIdx = boldRegex.lastIndex;
+            bLastIdx = boldRegexLocal.lastIndex;
           }
           if (bLastIdx < content.length) {
             boldParts.push(content.substring(bLastIdx));
@@ -567,7 +570,7 @@ function App() {
           if (citationObj) {
             finalElements.push(
               <a
-                key={`cit_${pIdx}`}
+                key={`cit_${part.sourceIdx}_${part.pageNum}`}
                 className="edis-citation-pill"
                 href="#"
                 onClick={(e) => {
@@ -588,9 +591,8 @@ function App() {
         }
       });
 
-      return finalElements.length > 0 ? (
-        <span key={`span_${pIdx}`}>{finalElements}</span>
-      ) : str;
+      // Return a fragment with all the inline elements
+      return <>{finalElements}</>;
     };
 
     const flushList = (key) => {
