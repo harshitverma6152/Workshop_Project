@@ -278,9 +278,25 @@ async function callGeminiGenerate(prompt, apiKey, systemInstruction = null) {
 }
 
 async function callGeminiEmbedding(text, apiKey) {
-  // gemini-2.5-flash/pro do not expose a REST embedding endpoint;
-  // fall back gracefully so TF-IDF similarity is used instead.
-  throw new Error('Embedding endpoint not available for this project – using TF-IDF fallback.');
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${apiKey}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: "models/text-embedding-004",
+      content: {
+        parts: [{ text }]
+      }
+    })
+  });
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Embedding API error: ${response.status} - ${errText}`);
+  }
+  const data = await response.json();
+  const values = data.embedding?.values;
+  if (!values) throw new Error("No embedding values returned from Gemini API");
+  return values;
 }
 
 // ==========================================

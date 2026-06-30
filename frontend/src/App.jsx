@@ -9,6 +9,7 @@ function App() {
 
   // Settings
   const [config, setConfig] = useState({ geminiApiKey: '', mockMode: true });
+  const [localApiKey, setLocalApiKey] = useState('');
   const [showConfigAlert, setShowConfigAlert] = useState(false);
 
   // Document Repository
@@ -100,28 +101,50 @@ function App() {
       const res = await fetch(`${API_BASE}/config`);
       if (res.ok) {
         const data = await res.json();
-        setConfig(data);
+        // On Netlify, /config is stateless – merge with localStorage to restore key
+        const savedKey = localStorage.getItem('edis_api_key') || '';
+        const savedMock = localStorage.getItem('edis_mock_mode');
+        const merged = {
+          geminiApiKey: data.geminiApiKey || savedKey,
+          mockMode: data.geminiApiKey ? data.mockMode : (savedMock !== null ? savedMock === 'true' : true)
+        };
+        setConfig(merged);
+        setLocalApiKey(merged.geminiApiKey);
       }
     } catch (e) {
+      // Offline fallback – load from localStorage
+      const savedKey = localStorage.getItem('edis_api_key') || '';
+      const savedMock = localStorage.getItem('edis_mock_mode');
+      const fallback = { geminiApiKey: savedKey, mockMode: savedMock !== null ? savedMock === 'true' : true };
+      setConfig(fallback);
+      setLocalApiKey(fallback.geminiApiKey);
       console.error("Error fetching config:", e);
     }
   };
 
   const updateConfigVal = async (updated) => {
+    // Optimistically update local state and localStorage immediately
+    const next = { ...config, ...updated };
+    setConfig(next);
+    if (updated.geminiApiKey !== undefined) {
+      setLocalApiKey(updated.geminiApiKey);
+      localStorage.setItem('edis_api_key', updated.geminiApiKey);
+    }
+    if (updated.mockMode !== undefined) {
+      localStorage.setItem('edis_mock_mode', String(updated.mockMode));
+    }
+    setShowConfigAlert(true);
+    setTimeout(() => setShowConfigAlert(false), 3000);
+
+    // Best-effort persist to backend (may be a no-op on stateless Netlify)
     try {
-      const res = await fetch(`${API_BASE}/config`, {
+      await fetch(`${API_BASE}/config`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated)
       });
-      if (res.ok) {
-        const data = await res.json();
-        setConfig(data.config);
-        setShowConfigAlert(true);
-        setTimeout(() => setShowConfigAlert(false), 3000);
-      }
     } catch (e) {
-      console.error("Error saving config:", e);
+      console.error("Error saving config to backend:", e);
     }
   };
 
@@ -174,6 +197,10 @@ function App() {
     try {
       const res = await fetch(`${API_BASE}/upload`, {
         method: 'POST',
+        headers: {
+          'x-gemini-api-key': config.geminiApiKey || '',
+          'x-mock-mode': config.mockMode ? 'true' : 'false'
+        },
         body: formData
       });
       if (!res.ok) {
@@ -277,7 +304,11 @@ function App() {
     try {
       const response = await fetch(`${API_BASE}/chat/message`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-gemini-api-key': config.geminiApiKey || '',
+          'x-mock-mode': config.mockMode ? 'true' : 'false'
+        },
         body: JSON.stringify({
           sessionId: activeSessionId,
           query: userMessageContent,
@@ -322,7 +353,11 @@ function App() {
     try {
       const res = await fetch(`${API_BASE}/agent`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-gemini-api-key': config.geminiApiKey || '',
+          'x-mock-mode': config.mockMode ? 'true' : 'false'
+        },
         body: JSON.stringify({
           instruction: agentInstruction,
           clientDocuments: documents.filter(d => d.status === 'completed').map(d => ({
@@ -356,6 +391,8 @@ function App() {
         setSelectedDoc(null);
         setDocuments([]);
         localStorage.removeItem('edis_documents');
+        localStorage.removeItem('edis_api_key');
+        localStorage.removeItem('edis_mock_mode');
         setChatSession(null);
         setChatMessages([]);
         setRunningAgentTask(null);
@@ -1009,14 +1046,16 @@ function App() {
                   <label>Google Gemini API Key:</label>
                   <input
                     type="password"
-                    value={config.geminiApiKey}
-                    onChange={(e) => updateConfigVal({ geminiApiKey: e.target.value })}
+                    value={localApiKey}
+                    onChange={(e) => setLocalApiKey(e.target.value)}
+                    onBlur={() => updateConfigVal({ geminiApiKey: localApiKey })}
                     placeholder="Enter your GEMINI_API_KEY..."
                   />
                   <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                    Note: If Sandbox/Mock mode is OFF and Key is configured, queries will fetch Google's live LLM generation and compute actual Voyage/Gemini embeddings. 
+                    Note: Click outside the key input field after writing to auto-save it to the backend. If Sandbox/Mock mode is OFF and Key is configured, queries will fetch Google's live LLM generation and compute actual Gemini embeddings. 
                   </p>
                 </div>
+
               </div>
 
               <div className="edis-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px', justifyContent: 'center' }}>

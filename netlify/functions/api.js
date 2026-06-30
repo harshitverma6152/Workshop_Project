@@ -1,6 +1,33 @@
 // Netlify Function: api.js
-// Handles all /api/* requests for the Netlify deployment (mock/sandbox mode only)
-// All data is ephemeral (in-memory) since serverless functions have no persistent FS.
+// Handles all /api/* requests for the Netlify deployment.
+// Supports LIVE Gemini AI when x-gemini-api-key header is provided and x-mock-mode is 'false'.
+// Falls back to offline mock mode otherwise (no persistent storage on Netlify).
+
+// ==========================================
+// GEMINI API HELPERS
+// ==========================================
+async function callGeminiGenerate(prompt, apiKey, systemInstruction = null) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const body = {
+    contents: [{ parts: [{ text: prompt }] }]
+  };
+  if (systemInstruction) {
+    body.systemInstruction = { parts: [{ text: systemInstruction }] };
+  }
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Gemini API error: ${response.status} - ${errText}`);
+  }
+  const data = await response.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error("No answer generated from Gemini API");
+  return text;
+}
 
 // ==========================================
 // TF-IDF + MOCK ENGINE UTILITIES
@@ -12,21 +39,6 @@ function tokenize(text) {
     .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?"'\n\r]/g, " ")
     .split(/\s+/)
     .filter(word => word.length > 2 && !stopwords.has(word));
-}
-
-function generateMockChunks(text, docId, docName) {
-  const chunks = [];
-  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 30);
-  for (let i = 0; i < sentences.length; i++) {
-    chunks.push({
-      id: 'chunk_' + i,
-      docId,
-      docName,
-      page: Math.floor(i / 3) + 1,
-      text: sentences[i].trim()
-    });
-  }
-  return chunks;
 }
 
 function generateMockSummary(filename, category, text) {
@@ -70,19 +82,17 @@ function generateMockRagAnswer(query, contexts) {
   else if (words.some(w => ["auto","renew","duration"].includes(w))) intentText = "contract auto-renewals and runtime duration conditions";
 
   const sentences = contextSnippet.match(/[^.!?]+[.!?]+/g) || [contextSnippet];
-  const matchedSentences = sentences.filter(s => words.some(w => s.toLowerCase().includes(w))).slice(0, 3).map(s => s.trim());
+  const matched = sentences.filter(s => words.some(w => s.toLowerCase().includes(w))).slice(0, 3).map(s => s.trim());
 
-  let responseBody = `###### System Answer (DEMO MODE - OFFLINE)\n\nBased on the retrieved document segments, here is the compiled information regarding **${intentText}**:\n\n`;
-  if (matchedSentences.length > 0) {
-    responseBody += matchedSentences.map((s, idx) => `* **Claim ${idx+1}**: "${s}"`).join('\n\n');
+  let body = `###### System Answer (DEMO MODE - OFFLINE)\n\nBased on the retrieved document segments, here is the compiled information regarding **${intentText}**:\n\n`;
+  if (matched.length > 0) {
+    body += matched.map((s, i) => `* **Claim ${i+1}**: "${s}"`).join('\n\n');
   } else {
-    responseBody += `* The system scanned text chunks but did not locate a direct sentence match. Closest context:\n  *"${contexts[0]?.text.substring(0, 200)}..."*\n`;
+    body += `* The system scanned text chunks but did not locate a direct sentence match. Closest context:\n  *"${contexts[0]?.text.substring(0, 200)}..."*\n`;
   }
-  responseBody += `\n\n**Evaluation Cites:**\n`;
-  contexts.forEach(c => {
-    responseBody += `- [Page ${c.page}] in *${c.docName}*: "${c.text.substring(0, 100)}..."\n`;
-  });
-  return responseBody;
+  body += `\n\n**Evaluation Cites:**\n`;
+  contexts.forEach(c => { body += `- [Page ${c.page}] in *${c.docName}*: "${c.text.substring(0, 100)}..."\n`; });
+  return body;
 }
 
 // ==========================================
@@ -90,18 +100,21 @@ function generateMockRagAnswer(query, contexts) {
 // ==========================================
 exports.handler = async function(event, context) {
   const method = event.httpMethod;
-  // path looks like /.netlify/functions/api/documents or /api/documents
   const rawPath = event.path || '';
-  // Normalize: strip /.netlify/functions/api or /api prefix
   const path = rawPath
-    .replace(/^\/.netlify\/functions\/api/, '')
+    .replace(/^\/\.netlify\/functions\/api/, '')
     .replace(/^\/api/, '')
     .replace(/\/$/, '') || '/';
+
+  // Read runtime config from request headers
+  const apiKey = event.headers['x-gemini-api-key'] || event.headers['X-Gemini-Api-Key'] || '';
+  const mockModeHeader = event.headers['x-mock-mode'] || event.headers['X-Mock-Mode'] || 'true';
+  const isLive = apiKey && mockModeHeader === 'false';
 
   const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, x-gemini-api-key, x-mock-mode',
     'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS'
   };
 
@@ -112,22 +125,29 @@ exports.handler = async function(event, context) {
   // ---- /config ----
   if (path === '/config' || path === '') {
     if (method === 'GET') {
+      // Return the config currently embedded in request headers (client is source of truth on Netlify)
       return {
         statusCode: 200, headers,
-        body: JSON.stringify({ geminiApiKey: '', mockMode: true })
+        body: JSON.stringify({ geminiApiKey: apiKey, mockMode: !isLive })
       };
     }
     if (method === 'POST') {
-      // On Netlify, config is stateless – just echo back mock mode
-      return {
-        statusCode: 200, headers,
-        body: JSON.stringify({ success: true, config: { geminiApiKey: '', mockMode: true } })
-      };
+      // On Netlify, config is stateless. Echo back what was sent.
+      try {
+        const body = JSON.parse(event.body || '{}');
+        return {
+          statusCode: 200, headers,
+          body: JSON.stringify({ success: true, config: { geminiApiKey: body.geminiApiKey ?? apiKey, mockMode: body.mockMode ?? !isLive } })
+        };
+      } catch {
+        return { statusCode: 200, headers, body: JSON.stringify({ success: true, config: { geminiApiKey: apiKey, mockMode: !isLive } }) };
+      }
     }
   }
 
   // ---- /documents ----
   if (path === '/documents' && method === 'GET') {
+    // Always empty – documents are persisted client-side via localStorage
     return { statusCode: 200, headers, body: JSON.stringify([]) };
   }
 
@@ -138,13 +158,11 @@ exports.handler = async function(event, context) {
 
   // ---- POST /upload ----
   if (path === '/upload' && method === 'POST') {
-    // Parse multipart form on Netlify – file content arrives as base64
     try {
       const docId = 'doc_' + Date.now();
       const isBase64 = event.isBase64Encoded;
       const body = event.body || '';
 
-      // Extract filename from Content-Disposition header in multipart body
       let filename = 'uploaded_document';
       let category = 'report';
       let extractedText = '';
@@ -156,7 +174,6 @@ exports.handler = async function(event, context) {
       })();
 
       if (boundary) {
-        // Decode body
         const rawBody = isBase64 ? Buffer.from(body, 'base64').toString('binary') : body;
         const parts = rawBody.split('--' + boundary);
 
@@ -164,12 +181,10 @@ exports.handler = async function(event, context) {
           if (part.includes('name="file"')) {
             const fnMatch = part.match(/filename="([^"]+)"/);
             if (fnMatch) filename = fnMatch[1];
-            // Extract readable text from after \r\n\r\n
             const sep = part.indexOf('\r\n\r\n');
             if (sep !== -1) {
-              // Get printable ASCII text from binary content as a sample
               const raw = part.substring(sep + 4).replace(/[^\x20-\x7E\n\r\t]/g, ' ').trim();
-              extractedText = raw.substring(0, 5000);
+              extractedText = raw.substring(0, 8000);
             }
           }
           if (part.includes('name="category"')) {
@@ -181,8 +196,34 @@ exports.handler = async function(event, context) {
         }
       }
 
-      // Generate summary from extracted text
-      const summary = generateMockSummary(filename, category, extractedText || filename);
+      // Generate summary – live AI if key available, else mock
+      let summary;
+      if (isLive) {
+        try {
+          console.log(`Netlify: Running live Gemini summarization for ${filename}`);
+          const textSample = extractedText.substring(0, 10000);
+          const [oneLine, executive, risks] = await Promise.all([
+            callGeminiGenerate(`Write a one-line summary (maximum 20 words) detailing what this ${category} is about. Text:\n\n${textSample}`, apiKey),
+            callGeminiGenerate(`Write a structured executive summary of this ${category}. Capture: Key parties, active dates, obligations, risk clauses. Format in Markdown.\n\nText:\n\n${textSample}`, apiKey),
+            callGeminiGenerate(`Analyze the legal and business risks in this ${category}. Generate a risk report with a table mapping critical clauses, exposure level (Red/Amber/Green), and recommended action. Format as Markdown.\n\nText:\n\n${textSample}`, apiKey)
+          ]);
+          summary = {
+            oneLine: oneLine.trim(),
+            executive: executive.trim(),
+            risks: risks.trim(),
+            sections: [
+              { section: "Document Overview", summary: "Extracted context boundaries from the file structure." },
+              { section: "Operational Obligations", summary: "Summary of contractual guidelines and duties." },
+              { section: "Legal / Risk Safeguards", summary: "Summary of liability conditions and governance details." }
+            ]
+          };
+        } catch (geminiErr) {
+          console.error("Netlify live summarization failed, using mock:", geminiErr);
+          summary = generateMockSummary(filename, category, extractedText || filename);
+        }
+      } else {
+        summary = generateMockSummary(filename, category, extractedText || filename);
+      }
 
       const docRecord = {
         id: docId,
@@ -195,23 +236,16 @@ exports.handler = async function(event, context) {
         summary
       };
 
-      return {
-        statusCode: 200, headers,
-        body: JSON.stringify({ success: true, document: docRecord })
-      };
+      return { statusCode: 200, headers, body: JSON.stringify({ success: true, document: docRecord }) };
     } catch (err) {
       console.error('Upload error:', err);
-      return {
-        statusCode: 500, headers,
-        body: JSON.stringify({ error: 'Failed to process document: ' + err.message })
-      };
+      return { statusCode: 500, headers, body: JSON.stringify({ error: 'Failed to process document: ' + err.message }) };
     }
   }
 
   // ---- POST /chat/session ----
   if (path === '/chat/session' && method === 'POST') {
-    const session = { id: 'session_' + Date.now(), messages: [] };
-    return { statusCode: 200, headers, body: JSON.stringify(session) };
+    return { statusCode: 200, headers, body: JSON.stringify({ id: 'session_' + Date.now(), messages: [] }) };
   }
 
   // ---- GET /chat/session/:id ----
@@ -225,12 +259,12 @@ exports.handler = async function(event, context) {
       const body = JSON.parse(event.body || '{}');
       const { query, clientDocuments } = body;
 
-      // Build context from client-side documents if available
-      let mockContexts;
+      // Build context from client-side document summaries
+      let contexts;
       if (clientDocuments && clientDocuments.length > 0) {
-        mockContexts = clientDocuments.flatMap(doc => {
+        contexts = clientDocuments.flatMap(doc => {
           const summaryText = doc.summary
-            ? [doc.summary.oneLine, doc.summary.executive].filter(Boolean).join(' ').substring(0, 300)
+            ? [doc.summary.oneLine, doc.summary.executive].filter(Boolean).join(' ').substring(0, 400)
             : `${doc.name} is a ${doc.category} document in the system.`;
           return [
             { docId: doc.id, docName: doc.name, page: 1, text: summaryText },
@@ -241,21 +275,40 @@ exports.handler = async function(event, context) {
           ];
         });
       } else {
-        mockContexts = [
+        contexts = [
           { docId: 'demo', docName: 'Sample Document', page: 1, text: 'This agreement establishes the terms and conditions between the parties.' },
           { docId: 'demo', docName: 'Sample Document', page: 2, text: 'Termination may occur with 30 days written notice from either party.' }
         ];
       }
 
-      const content = generateMockRagAnswer(query || '', mockContexts);
-      const answerMessage = {
-        id: 'msg_' + Date.now(),
-        role: 'assistant',
-        content,
-        citations: mockContexts.slice(0, 5),
-        timestamp: new Date().toISOString()
+      let content;
+      if (isLive) {
+        try {
+          console.log(`Netlify: Live Gemini RAG for query: "${query}"`);
+          const contextPrompt = contexts.map((c, i) =>
+            `[Source ${i+1}: File: ${c.docName}, Page: ${c.page}]\nContent: ${c.text}`
+          ).join('\n\n');
+          const systemMsg = `You are a compliance assistant. Respond to user queries using ONLY the document sources provided in the SOURCE DOCKET. For every claim add an inline citation e.g. (Source 1, Page 3). If the docket does not contain the answer, say "I cannot identify this detail from the provided sources."`;
+          const prompt = `SOURCE DOCKET:\n${contextPrompt}\n\nUSER QUESTION: ${query}`;
+          content = await callGeminiGenerate(prompt, apiKey, systemMsg);
+        } catch (geminiErr) {
+          console.error("Netlify live chat failed, falling back:", geminiErr);
+          content = generateMockRagAnswer(query || '', contexts);
+        }
+      } else {
+        content = generateMockRagAnswer(query || '', contexts);
+      }
+
+      return {
+        statusCode: 200, headers,
+        body: JSON.stringify({
+          id: 'msg_' + Date.now(),
+          role: 'assistant',
+          content,
+          citations: contexts.slice(0, 5),
+          timestamp: new Date().toISOString()
+        })
       };
-      return { statusCode: 200, headers, body: JSON.stringify(answerMessage) };
     } catch (err) {
       return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
     }
@@ -266,23 +319,71 @@ exports.handler = async function(event, context) {
     try {
       const body = JSON.parse(event.body || '{}');
       const { instruction, clientDocuments } = body;
-
       const taskId = 'task_' + Date.now();
       const now = new Date().toISOString();
 
       const files = clientDocuments && clientDocuments.length > 0
         ? clientDocuments
-        : [{ name: 'Sample Document', category: 'report' }];
+        : [];
 
-      let tableRows = '';
-      files.forEach((f, idx) => {
-        const hasRenew = f.name.toLowerCase().includes('contract') || idx % 2 === 0;
-        tableRows += `| **${f.name}** | ${(f.category || 'report').toUpperCase()} | ${hasRenew ? "YES (Auto-extensions)" : "NO (Direct expiry)"} | ${hasRenew ? "60 Days" : "N/A"} | ${hasRenew ? "🔴 High" : "🟢 Low"} |\n`;
-      });
+      if (files.length === 0) {
+        return {
+          statusCode: 200, headers,
+          body: JSON.stringify({
+            id: taskId, instruction, status: 'failed',
+            logs: [{ step: 1, type: 'thought', title: 'Corpus Error', detail: 'No documents uploaded. Please upload files before running agent analysis.', timestamp: now }],
+            finalAnswer: "#### Execution Failed\nPlease upload at least one document (contract, policy, or report) to let the Agent run comparison analysis."
+          })
+        };
+      }
 
-      const mockReport = `### 📋 Autonomous Agent Document Analysis Report
+      let finalAnswer = '';
+      let logs = [];
+
+      if (isLive) {
+        try {
+          logs.push({ step: 1, type: 'thought', title: 'Formulating Analytical Plan', detail: `User requested: "${instruction}". Engaging live Gemini planning engine.`, timestamp: now });
+          logs.push({ step: 2, type: 'tool_call', title: 'List Files', detail: `Orchestrating scan across ${files.length} active documents.`, timestamp: now });
+          logs.push({ step: 3, type: 'observation', title: 'Files Located', detail: `Found active records: ${files.map(f => f.name).join(', ')}`, timestamp: now });
+          logs.push({ step: 4, type: 'thought', title: 'Consulting Planner Engine', detail: 'Polling Gemini model to compile optimal tool sequence...', timestamp: now });
+
+          const summarySnippet = files.map(d => `**${d.name}** (${d.category}): ${d.summary?.oneLine || 'No summary available.'}\n${d.summary?.executive?.substring(0, 400) || ''}`).join('\n\n---\n\n');
+
+          logs.push({ step: 5, type: 'tool_call', title: 'Extract Document Context', detail: 'Reading document summaries from client-side repository...', timestamp: now });
+          logs.push({ step: 6, type: 'observation', title: 'Context Retrieved', detail: `Loaded ${files.length} document profiles for synthesis.`, timestamp: now });
+          logs.push({ step: 7, type: 'thought', title: 'Synthesizing Final Findings', detail: 'Drafting comprehensive analysis report...', timestamp: now });
+
+          const synthesisPrompt = `You are a senior compliance analyst. Synthesize a comprehensive report in response to:
+
+"${instruction}"
+
+Document Repository (${files.length} documents):
+${summarySnippet}
+
+Format your output beautifully in Markdown. Include:
+- An executive overview
+- A comparison table if multiple documents are involved
+- Key findings and risk observations  
+- Actionable recommendations`;
+
+          finalAnswer = await callGeminiGenerate(synthesisPrompt, apiKey);
+          logs.push({ step: 8, type: 'thought', title: 'Report Compiled', detail: 'Live AI analyst report successfully produced.', timestamp: now });
+        } catch (geminiErr) {
+          console.error("Netlify live agent failed, falling back:", geminiErr);
+          finalAnswer = ''; // will trigger mock fallback below
+        }
+      }
+
+      if (!finalAnswer) {
+        // Mock fallback
+        let tableRows = '';
+        files.forEach((f, idx) => {
+          const hasRenew = f.name.toLowerCase().includes('contract') || idx % 2 === 0;
+          tableRows += `| **${f.name}** | ${(f.category || 'report').toUpperCase()} | ${hasRenew ? "YES (Auto-extensions)" : "NO (Direct expiry)"} | ${hasRenew ? "60 Days" : "N/A"} | ${hasRenew ? "🔴 High" : "🟢 Low"} |\n`;
+        });
+        finalAnswer = `### 📋 Autonomous Agent Document Analysis Report
 **Analyzed Instruction**: *"${instruction}"*
-**Execution Mode**: Netlify Sandbox / Mock Mode
+**Execution Mode**: Sandbox / Mock Mode
 **Analyzed Corpus**: ${files.length} Documents.
 
 #### Key Parameters Extracted
@@ -297,23 +398,20 @@ ${tableRows}
 
 *Analysis generated automatically by EDIS Document Analyst Agent.*`;
 
-      const task = {
-        id: taskId,
-        instruction,
-        status: 'completed',
-        logs: [
-          { step: 1, type: 'thought', title: 'Formulating Analytical Plan', detail: `User requested: "${instruction}". Parsing local databases...`, timestamp: now },
-          { step: 2, type: 'tool_call', title: 'List Corpus Documents', detail: 'Querying document database categories.', timestamp: now },
-          { step: 3, type: 'observation', title: 'Available Source Files', detail: `Located ${files.length} documents: ${files.map(f => f.name).join(', ')}`, timestamp: now },
-          { step: 4, type: 'tool_call', title: 'Scan Document Chunks', detail: `Searching for concepts matching: "${instruction}".`, timestamp: now },
-          { step: 5, type: 'observation', title: 'Relevance Matrix Compiled', detail: `Completed similarity scan. Matched ${files.length} documents.`, timestamp: now },
-          { step: 6, type: 'thought', title: 'Synthesizing Comparison Metrics', detail: 'Drafting final output summary table and recommendation guidelines.', timestamp: now },
-          { step: 7, type: 'thought', title: 'Task Finalized', detail: 'Analyst findings compiled, verified, and complete.', timestamp: now }
-        ],
-        finalAnswer: mockReport
-      };
+        if (logs.length === 0) {
+          logs = [
+            { step: 1, type: 'thought', title: 'Formulating Analytical Plan', detail: `User requested: "${instruction}". Parsing repositories...`, timestamp: now },
+            { step: 2, type: 'tool_call', title: 'List Corpus Documents', detail: 'Querying document database categories.', timestamp: now },
+            { step: 3, type: 'observation', title: 'Available Source Files', detail: `Located ${files.length} documents: ${files.map(f => f.name).join(', ')}`, timestamp: now },
+            { step: 4, type: 'tool_call', title: 'Scan Document Chunks', detail: `Searching for concepts matching: "${instruction}".`, timestamp: now },
+            { step: 5, type: 'observation', title: 'Relevance Matrix Compiled', detail: `Similarity scan complete. Matched ${files.length} documents.`, timestamp: now },
+            { step: 6, type: 'thought', title: 'Synthesizing Comparison Metrics', detail: 'Drafting final summary table and recommendations.', timestamp: now },
+            { step: 7, type: 'thought', title: 'Task Finalized', detail: 'Analyst findings compiled and complete.', timestamp: now }
+          ];
+        }
+      }
 
-      return { statusCode: 200, headers, body: JSON.stringify(task) };
+      return { statusCode: 200, headers, body: JSON.stringify({ id: taskId, instruction, status: 'completed', logs, finalAnswer }) };
     } catch (err) {
       return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
     }
@@ -322,10 +420,7 @@ ${tableRows}
   // ---- GET /agent/:id ----
   if (path.startsWith('/agent/') && method === 'GET') {
     const taskId = path.split('/').pop();
-    return {
-      statusCode: 200, headers,
-      body: JSON.stringify({ id: taskId, status: 'completed', logs: [], finalAnswer: '' })
-    };
+    return { statusCode: 200, headers, body: JSON.stringify({ id: taskId, status: 'completed', logs: [], finalAnswer: '' }) };
   }
 
   // ---- POST /reset ----
@@ -333,9 +428,6 @@ ${tableRows}
     return { statusCode: 200, headers, body: JSON.stringify({ success: true, message: 'Netlify mock state cleared.' }) };
   }
 
-  // ---- Default 404 ----
-  return {
-    statusCode: 404, headers,
-    body: JSON.stringify({ error: `Route not found: ${method} ${path}` })
-  };
+  // ---- 404 ----
+  return { statusCode: 404, headers, body: JSON.stringify({ error: `Route not found: ${method} ${path}` }) };
 };
