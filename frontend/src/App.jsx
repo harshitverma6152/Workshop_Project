@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-  ? (window.location.port === '5173' ? 'http://localhost:5000/api' : '/api')
-  : (import.meta.env.VITE_API_URL || 'http://localhost:5000/api');
+const API_BASE = '/api';
 
 function App() {
   // Navigation
@@ -168,6 +166,17 @@ function App() {
         const err = await res.json();
         alert(err.error || "Failed to upload file");
       } else {
+        const data = await res.json();
+        // Optimistically add the document to local state immediately
+        // (required for stateless Netlify deployments where /documents always returns [])
+        if (data.document) {
+          setDocuments(prev => {
+            // Avoid duplicates if the document is already in state
+            if (prev.find(d => d.id === data.document.id)) return prev;
+            return [...prev, data.document];
+          });
+        }
+        // Also re-fetch in case backend has more documents (local Express server)
         await fetchDocuments();
       }
     } catch (err) {
@@ -252,7 +261,14 @@ function App() {
           sessionId: activeSessionId,
           query: userMessageContent,
           filterDocId: filterDocId || undefined,
-          filterCategory: filterCategory || undefined
+          filterCategory: filterCategory || undefined,
+          // Pass client-side documents so stateless backends (Netlify) can answer
+          clientDocuments: documents.filter(d => d.status === 'completed').map(d => ({
+            id: d.id,
+            name: d.name,
+            category: d.category,
+            summary: d.summary
+          }))
         })
       });
 
@@ -286,7 +302,12 @@ function App() {
       const res = await fetch(`${API_BASE}/agent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ instruction: agentInstruction })
+        body: JSON.stringify({
+          instruction: agentInstruction,
+          clientDocuments: documents.filter(d => d.status === 'completed').map(d => ({
+            id: d.id, name: d.name, category: d.category, summary: d.summary
+          }))
+        })
       });
 
       if (!res.ok) {

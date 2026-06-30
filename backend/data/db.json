@@ -1,10 +1,144 @@
 {
   "config": {
-    "geminiApiKey": "YOUR_GEMINI_API_KEY",
-    "mockMode": false
+    "geminiApiKey": "",
+    "mockMode": true
   },
-  "documents": [],
-  "chunks": [],
+  "documents": [
+    {
+      "id": "doc_1782790080179",
+      "name": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "category": "report",
+      "path": "C:\\Users\\glaun\\OneDrive\\Desktop\\workshop project\\backend\\data\\uploads\\1782790080004-Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "uploadedAt": "2026-06-30T03:28:01.463Z",
+      "status": "completed",
+      "pageCount": 10,
+      "summary": {
+        "oneLine": "This report covers operational guidelines and active terms for associated parties, signed/effective on Not explicitly declared.",
+        "executive": "### Executive Summary for Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf\n- **Document Class**: REPORT\n- **Key Parties**: queries & documents\n- **Key Dates**: Not explicitly declared\n- **Primary Objective**: Administrative/legal coordination and scope enforcement.\n\n### Operational Obligations\n1. Maintain standards and delivery timelines as outlined in the core schedule.\n2. Compliance reporting and verification must be submitted periodically.\n3. Financial / penalty terms: Standard Terms.\n\n### Immediate High-Risk Exposure\n- ⚠️ **Risk Warning**: No immediate high-risk warning flags detected.",
+        "risks": "### Hazard Analysis & Risk Flag Matrix\n\n| Clause Interest | Raw Condition | Exposure Level | Recommended Action |\n|:---|:---|:---|:---|\n| **Liability Scope** | Standard Terms... | Amber | Cap total liability to 1x contract value. |\n| **Notice Boundaries** | Termination policies | Green | Audit notice timelines against standard operations. |\n| **Renewal Trigger** | Auto-extensions | Green | Disable automatic renewals, switch to written consent. |\n",
+        "sections": [
+          {
+            "section": "Introduction & Scope",
+            "summary": "Establishes baseline framework and context of the parties and governance."
+          },
+          {
+            "section": "Key Clauses & Legal Standards",
+            "summary": "Details performance rules, indemnifications, and financial terms."
+          },
+          {
+            "section": "Covenants & Expiration",
+            "summary": "Outline timelines, default remedies, termination notices, and exit protocols."
+          }
+        ]
+      }
+    }
+  ],
+  "chunks": [
+    {
+      "id": "chunk_1782790081463_7gp7cjh6a",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 1,
+      "text": "MEDICAL RETRIEVAL-AUGMENTED\nGENERATION SYSTEM FOR\nHEALTHCARE KNOWLEDGE ACCESS",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_zjygm0nqw",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 2,
+      "text": "INTRODUCTION\nThe exponential growth of medical data has made it\nchallenging to access relevant and reliable healthcare\ninformation efficiently.\nTraditional search systems lack contextual\nunderstanding, while standalone AI models may\ngenerate unverified or inaccurate responses.\nTo address this, we propose a Medical Retrieval-\nAugmented Generation (RAG) system that combines\nsemantic search with domain-specific AI to deliver\naccurate, evidence-based medical insights.\nTraditional search systems like keyword search often\nreturn large volumes of irrelevant information, which\nmakes it difficult for doctors to find precise answers\nquickly.\nModern Large Language Models (LLMs) can generate\nnatural language responses but sometimes produce\nhallucinations (incorrect information) because they rely\nonly",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_nlipniicr",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 2,
+      "text": "rge Language Models (LLMs) can generate\nnatural language responses but sometimes produce\nhallucinations (incorrect information) because they rely\nonly on their training data.\nTo solve this issue, Retrieval-Augmented Generation (RAG)\nis used. RAG combines information retrieval and generative\nAI to produce accurate, evidence-based medical answers.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_5tbe1wo83",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 3,
+      "text": "PROBLEM STATEMENT\n Information Overload\nFragmented Data\nSources\nThe healthcare domain is overwhelmed with massive volumes of medical research, clinical data, and\nrapidly evolving knowledge, making it increasingly difficult to quickly access relevant, reliable, and up-\nto-date information.\nTraditional search engines return unstructured and time-consuming results, requiring significant effort\nto filter and interpret useful insights. At the same time, generative AI models often produce\nhallucinated or non-verified medical responses, which can be risky in critical healthcare scenarios.\nThis creates a significant gap where users lack an intelligent system that can efficiently retrieve trusted\nmedical knowledge and generate accurate, context-aware, and evidence-based insights in real",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_6424zvpa3",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 3,
+      "text": "n intelligent system that can efficiently retrieve trusted\nmedical knowledge and generate accurate, context-aware, and evidence-based insights in real time,\nensuring both reliability and usability.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_kd4zrisoe",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 4,
+      "text": "PROPOSED SOLUTION\nWe propose MedIntel RAG, an advanced Medical Retrieval-\nAugmented Generation System designed to provide accurate,\nevidence-based medical knowledge retrieval and explanation.\nThe system integrates biomedical language models with\nvector-based semantic search to ensure that every generated\nresponse is grounded in real medical literature.\nKey Capabilities\n• Retrieve relevant medical research papers using semantic search\n • Generate context-aware explanations using BioMistral 7B\n • Reduce AI hallucinations by grounding responses in verified medical knowledge\n • Provide fast and intelligent access to biomedical information\nHow the System Works\nUser Query → Semantic Search → Medical Knowledge Retrieval → AI-Powered Explanation\nKey Innovation\nUnlike traditional AI chatbots, our",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_3g8gbp967",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 4,
+      "text": "he System Works\nUser Query → Semantic Search → Medical Knowledge Retrieval → AI-Powered Explanation\nKey Innovation\nUnlike traditional AI chatbots, our system first retrieves\n relevant medical evidence and then generates answers based on that evidence,\n ensuring higher reliability and transparency.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_pzb7eq3ae",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 6,
+      "text": "SYSTEM ARCHITECTURE\nStep 1: Medical Data\nCollection\nStep 2: Data Preprocessing\nMedical knowledge is collected from\ntrusted sources such as:\nPubMed\nWHO guidelines\nMedical textbooks\nResearch journals\nClinical datasets\nThe collected documents are\nprepared for processing:\nCleaning text\nRemoving noise\nSplitting documents into smaller\nchunks\nThis improves retrieval accuracy.\nStep 3: Embedding\nGeneration\nText data is converted into vector\nembeddings using embedding models.\nEmbedding models represent text in\nnumerical form so AI systems can\ncompare similarity between queries and\ndocuments.\nSentence Transformers\nOpenAI embeddings\nBioBERT\nStep 4: Vector Database\nEmbeddings are stored in a vector\ndatabase.\nFAISS\nPinecone\nChroma\nWeaviate\nThese databases allow fast similarity\nsearch.\nStep 5: Retrieval",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_ez8s6px6v",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 6,
+      "text": "or Database\nEmbeddings are stored in a vector\ndatabase.\nFAISS\nPinecone\nChroma\nWeaviate\nThese databases allow fast similarity\nsearch.\nStep 5: Retrieval Module\nWhen a user asks a question:\n1.The query is converted into an\nembedding.\n2.The vector database searches for\nsimilar documents.\n3.The most relevant medical\nknowledge is retrieved.\nThe retrieved documents are passed to\nan LLM such as:\nGPT\nLLaMA\nMed-PaLM\nThe LLM generates an answer based on\nthe retrieved context.\nThis ensures the answer is fact-based\nand reliable.\nStep 6: Large Language\nModel (LLM)",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_k8560rg0a",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 7,
+      "text": "01\n02\nProgramming Language\nPython\nAI Frameworks\nLangChain\nLlamaIndex\nTECHNOLOGY STACK\n03\nEmbedding Models\nSentence\nTransformers\nBioBERT\nVector Databases\nFAISS\nPinecone\nChroma\nLarge Language\nModels\nGPT\nLLaMA\nMed-PaLM\nFrontend\nReact\nStreamlit\n05\n06\n04",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_yzn6vpfxj",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 8,
+      "text": "Impacts Benefits of\nMedical RAG Systems\n1. Accurate Medical Information\nAnswers are generated using verified medical sources.\n2. Reduced AI Hallucinations\nThe model relies on retrieved documents rather than only training\ndata.\n3. Faster Knowledge Access\nDoctors can quickly find medical information during clinical practice.\n4. Evidence-Based Medicine\nResponses are grounded in scientific research.\n5. Support for Medical Education\nMedical students can use the system for learning and research.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_jv2cfcrif",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 9,
+      "text": "Future Scope\nThe system can be extended into a clinical decision support tool to assist doctors with real-time, evidence-\nbased recommendations.\n• Integration with real-time hospital data and electronic health records (EHRs) can enable personalized\nmedical insights.\n• Expansion to include more trusted datasets such as World Health Organization guidelines and global\nclinical research for broader coverage.Development of a multilingual interface to make medical knowledge\naccessible to users in regional languages.\n• Addition of voice-based interaction to support hands-free usage for healthcare professionals and\npatients.\n• Incorporation of explainable AI features, showing sources and reasoning behind each generated response.\n• Scaling the system into a mobile or web application for widespread",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782790081463_9mvf2lr4u",
+      "docId": "doc_1782790080179",
+      "docName": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+      "page": 9,
+      "text": "inable AI features, showing sources and reasoning behind each generated response.\n• Scaling the system into a mobile or web application for widespread public and professional use.\n• Integration with wearable devices for real-time health monitoring and intelligent suggestio",
+      "embedding": []
+    }
+  ],
   "chatSessions": [
     {
       "id": "session_1782754688467",
