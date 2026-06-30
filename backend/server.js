@@ -974,6 +974,41 @@ app.get('/api/agent/:id', (req, res) => {
   res.json(task);
 });
 
+// ==========================================
+// GENERAL PURPOSE AI CHATBOT
+// ==========================================
+app.post('/api/ai-chat', async (req, res) => {
+  const { messages } = req.body;
+  const db = readDb();
+
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: "messages array required" });
+  }
+
+  if (!db.config.geminiApiKey || db.config.mockMode) {
+    return res.json({
+      role: 'assistant',
+      content: "⚠️ **AI Assistant is offline.** To enable it, go to **Settings**, paste your Gemini API key, and turn off Sandbox Mode."
+    });
+  }
+
+  try {
+    // Build a multi-turn prompt from conversation history
+    const systemMsg = `You are a helpful, knowledgeable AI assistant. Answer questions clearly and accurately. Format your responses in Markdown when appropriate (use bold, lists, code blocks etc). Be concise but thorough.`;
+    const conversationText = messages.map(m =>
+      `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`
+    ).join('\n\n');
+    const prompt = `${conversationText}\n\nAssistant:`;
+
+    const answer = await callGeminiGenerate(prompt, db.config.geminiApiKey, systemMsg);
+    res.json({ role: 'assistant', content: answer });
+  } catch (err) {
+    console.error("AI Chat error:", err);
+    res.status(500).json({ error: "AI generation failed: " + err.message });
+  }
+});
+
+
 // Clear Database State (Helper for debugging/evaluations)
 app.post('/api/reset', (req, res) => {
   // Delete uploaded files

@@ -423,7 +423,41 @@ ${tableRows}
     return { statusCode: 200, headers, body: JSON.stringify({ id: taskId, status: 'completed', logs: [], finalAnswer: '' }) };
   }
 
+  // ---- POST /ai-chat ----
+  if (path === '/ai-chat' && method === 'POST') {
+    try {
+      const body = JSON.parse(event.body || '{}');
+      const { messages } = body;
+
+      if (!isLive) {
+        return {
+          statusCode: 200, headers,
+          body: JSON.stringify({
+            role: 'assistant',
+            content: "⚠️ **AI Assistant is offline.** To enable it, go to **Settings**, paste your Gemini API key, and turn off **Sandbox Mode**. Once connected, I can answer *any* question!"
+          })
+        };
+      }
+
+      const systemMsg = `You are a helpful, knowledgeable AI assistant. Answer questions clearly and accurately. Format your responses in Markdown when appropriate (use bold, lists, code blocks etc). Be concise but thorough.`;
+      const conversationText = (messages || []).map(m =>
+        `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`
+      ).join('\n\n');
+      const prompt = `${conversationText}\n\nAssistant:`;
+
+      const answer = await callGeminiGenerate(prompt, apiKey, systemMsg);
+      return {
+        statusCode: 200, headers,
+        body: JSON.stringify({ role: 'assistant', content: answer })
+      };
+    } catch (err) {
+      console.error('AI Chat error:', err);
+      return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+    }
+  }
+
   // ---- POST /reset ----
+
   if (path === '/reset' && method === 'POST') {
     return { statusCode: 200, headers, body: JSON.stringify({ success: true, message: 'Netlify mock state cleared.' }) };
   }
