@@ -129,8 +129,22 @@ function App() {
     try {
       const res = await fetch(`${API_BASE}/documents`);
       if (res.ok) {
-        const data = await res.json();
+        let data = await res.json();
+        
+        // Handover to localStorage in stateless environments (Netlify serverless)
+        const local = localStorage.getItem('edis_documents');
+        if (data.length === 0 && local) {
+          const parsed = JSON.parse(local);
+          if (parsed.length > 0) {
+            data = parsed;
+          }
+        }
+
         setDocuments(data);
+        if (data.length > 0) {
+          localStorage.setItem('edis_documents', JSON.stringify(data));
+        }
+
         // If a document was open for viewing and has finished processing, update the view context
         if (selectedDoc) {
           const fresh = data.find(d => d.id === selectedDoc.id);
@@ -171,9 +185,9 @@ function App() {
         // (required for stateless Netlify deployments where /documents always returns [])
         if (data.document) {
           setDocuments(prev => {
-            // Avoid duplicates if the document is already in state
-            if (prev.find(d => d.id === data.document.id)) return prev;
-            return [...prev, data.document];
+            const next = prev.find(d => d.id === data.document.id) ? prev : [...prev, data.document];
+            localStorage.setItem('edis_documents', JSON.stringify(next));
+            return next;
           });
         }
         // Also re-fetch in case backend has more documents (local Express server)
@@ -197,6 +211,13 @@ function App() {
       if (res.ok) {
         if (selectedDoc && selectedDoc.id === id) {
           setSelectedDoc(null);
+        }
+        // Update local storage representation
+        const local = localStorage.getItem('edis_documents');
+        if (local) {
+          const parsed = JSON.parse(local).filter(d => d.id !== id);
+          localStorage.setItem('edis_documents', JSON.stringify(parsed));
+          setDocuments(parsed);
         }
         await fetchDocuments();
       }
@@ -334,6 +355,7 @@ function App() {
       if (res.ok) {
         setSelectedDoc(null);
         setDocuments([]);
+        localStorage.removeItem('edis_documents');
         setChatSession(null);
         setChatMessages([]);
         setRunningAgentTask(null);

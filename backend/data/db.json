@@ -31,6 +31,34 @@
           }
         ]
       }
+    },
+    {
+      "id": "doc_1782791110360",
+      "name": "EDIS_Implementation_Plan.docx",
+      "category": "report",
+      "path": "C:\\Users\\glaun\\OneDrive\\Desktop\\workshop project\\backend\\data\\uploads\\1782791110356-EDIS_Implementation_Plan.docx",
+      "uploadedAt": "2026-06-30T03:45:10.555Z",
+      "status": "completed",
+      "pageCount": 11,
+      "summary": {
+        "oneLine": "This report covers operational guidelines and active terms for associated parties, signed/effective on Not explicitly declared.",
+        "executive": "### Executive Summary for EDIS_Implementation_Plan.docx\n- **Document Class**: REPORT\n- **Key Parties**: Not explicitly detected (Unstructured Document)\n- **Key Dates**: Not explicitly declared\n- **Primary Objective**: Administrative/legal coordination and scope enforcement.\n\n### Operational Obligations\n1. Maintain standards and delivery timelines as outlined in the core schedule.\n2. Compliance reporting and verification must be submitted periodically.\n3. Financial / penalty terms: Standard Terms.\n\n### Immediate High-Risk Exposure\n- ⚠️ **Risk Warning**: Auto-renewal clause active (Requires review 60 days prior to expiration).",
+        "risks": "### Hazard Analysis & Risk Flag Matrix\n\n| Clause Interest | Raw Condition | Exposure Level | Recommended Action |\n|:---|:---|:---|:---|\n| **Liability Scope** | Standard Terms... | Amber | Cap total liability to 1x contract value. |\n| **Notice Boundaries** | Termination policies | Green | Audit notice timelines against standard operations. |\n| **Renewal Trigger** | Auto-extensions | Red 🚨 | Disable automatic renewals, switch to written consent. |\n",
+        "sections": [
+          {
+            "section": "Introduction & Scope",
+            "summary": "Establishes baseline framework and context of the parties and governance."
+          },
+          {
+            "section": "Key Clauses & Legal Standards",
+            "summary": "Details performance rules, indemnifications, and financial terms."
+          },
+          {
+            "section": "Covenants & Expiration",
+            "summary": "Outline timelines, default remedies, termination notices, and exit protocols."
+          }
+        ]
+      }
     }
   ],
   "chunks": [
@@ -137,6 +165,254 @@
       "page": 9,
       "text": "inable AI features, showing sources and reasoning behind each generated response.\n• Scaling the system into a mobile or web application for widespread public and professional use.\n• Integration with wearable devices for real-time health monitoring and intelligent suggestio",
       "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_y6o0jopeg",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 1,
+      "text": "FINAL YEAR / MAJOR PROJECT\n\nEnterprise Document Intelligence System\n\nAn Agentic RAG Platform for Automated Policy, Contract, and Report Analysis\n\nImplementation Plan & Technical Blueprint\n\nDocument Version 1.0\n\nProject Title\n\nEnterprise Document Intelligence System\n\nCategory\n\nGenerative AI / Applied NLP / Agentic Systems\n\nCore Stack\n\nRAG + LLM Agent + Prompt Engineering Pipeline\n\nBuild Platform\n\nAntigravity (Agentic Dev Environment)\n\nPrepared For\n\nAcademic Submission / Final Year Project Evaluation\n\nStatus\n\nApproved for Implementation\n\nTable of Contents\n\n1. Executive Summary\n\nModern organizations accumulate thousands of unstructured PDF documents — policies, contracts, compliance reports, and financial statements — that are searched manually, read line by line, and summarized by hand. This",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_s52u58t6x",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 1,
+      "text": "ents — policies, contracts, compliance reports, and financial statements — that are searched manually, read line by line, and summarized by hand. This is slow, inconsistent, and error-prone, especially for legal and compliance-sensitive material.\n\nThe Enterprise Document Intelligence System (EDIS) is a full-stack AI platform that lets an organization upload its documents once and then interact with them intelligently: ask natural-language questions and receive grounded, cited answers; generate accurate summaries on demand; and deploy an autonomous “Document Analyst” agent that can plan and execute multi-step analysis tasks (e.g. “compare clause 4.2 across all vendor contracts and flag any with auto-renewal”).\n\nThe system is architected around four pillars that map directly to the four",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_o13mgf7vj",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 1,
+      "text": "clause 4.2 across all vendor contracts and flag any with auto-renewal”).\n\nThe system is architected around four pillars that map directly to the four project requirements: a secure multi-format Upload & Ingestion pipeline; a Retrieval-Augmented Generation (RAG) layer for grounded question answering; a Prompt Engineering layer dedicated to high-fidelity summarization; and an Agent layer that orchestrates tools autonomously to act as a virtual document analyst. A bonus module adds scheduled, automatic executive-summary generation.\n\nWhy this stands out in class",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_ntiptj3qy",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 2,
+      "text": "Most student RAG projects stop at “upload PDF → chat with PDF.” This project goes further: it separates RAG (retrieval) from Prompt Engineering (summarization) from Agentic reasoning (multi-step analysis) as three distinct, demonstrable layers — which is exactly how production enterprise AI systems are actually designed.\n\nBuilt and orchestrated using Antigravity, giving you a visible, reproducible build log and agent-driven development workflow you can show during evaluation.\n\n2. Problem Statement\n\nLarge organizations across legal, HR, finance, and compliance functions store critical knowledge inside thousands of disparate PDF files. Three concrete pain points motivate this project:\n\nInformation is locked in unstructured text. Contracts, policies, and reports are written in prose, not",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_aayew88mx",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 2,
+      "text": "ee concrete pain points motivate this project:\n\nInformation is locked in unstructured text. Contracts, policies, and reports are written in prose, not structured databases, so standard search (Ctrl+F, keyword search) fails to answer real questions like “which contracts expire in Q1 and have a penalty clause?”\n\nManual review does not scale. A compliance officer cannot read 4,000 policy documents to verify a new regulation is reflected everywhere it should be. Human review is slow, expensive, and inconsistent between reviewers.\n\nSummarization quality varies by person and by day. Executive summaries written manually differ in structure, tone, and completeness depending on who wrote them and how much time they had.\n\nEDIS addresses all three by combining retrieval (find the right passages),",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_7008j1s2l",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 2,
+      "text": ", and completeness depending on who wrote them and how much time they had.\n\nEDIS addresses all three by combining retrieval (find the right passages), generation (answer and summarize precisely), and agentic reasoning (chain multiple retrieval and generation steps together to complete a complex analytical task) into one coherent system.\n\n3. Project Objectives\n\nBuild a secure ingestion pipeline that accepts policies, contracts, and reports in PDF (and optionally DOCX) format, validates them, and prepares them for retrieval.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_8qkua889w",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 3,
+      "text": "Implement a Retrieval-Augmented Generation pipeline that answers natural-language questions about uploaded documents with source-grounded, citation-backed answers and minimal hallucination.\n\nApply structured prompt engineering techniques to produce consistent, high-quality document summaries at multiple levels of granularity (one-line, paragraph, and section-by-section).\n\nDesign and implement an autonomous Document Analyst agent capable of multi-step reasoning — planning a sequence of retrieval, comparison, and summarization actions to satisfy complex, compound user requests.\n\n(Bonus) Automatically generate and schedule executive summaries for newly uploaded or updated documents without user intervention.\n\nDemonstrate the system end-to-end with a working demo, a reproducible Antigravity",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_5yqc3wpb0",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 3,
+      "text": "for newly uploaded or updated documents without user intervention.\n\nDemonstrate the system end-to-end with a working demo, a reproducible Antigravity build log, and complete technical documentation (this report).\n\n4. Scope\n\n4.1 In Scope\n\nUpload and process PDF documents across three categories: Policies, Contracts, Reports.\n\nText extraction, chunking, embedding, and vector storage for semantic search.\n\nConversational question answering grounded in retrieved document chunks (RAG).\n\nPrompt-engineered summarization (whole-document and section-level).\n\nAn LLM-driven agent with tool access (retrieval tool, summarization tool, comparison tool, metadata tool).\n\nA web-based interface for upload, chat, and viewing generated summaries/reports.\n\nAutomatic executive summary generation as a",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_q6ok2xr5c",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 3,
+      "text": "n tool, metadata tool).\n\nA web-based interface for upload, chat, and viewing generated summaries/reports.\n\nAutomatic executive summary generation as a background/bonus job.\n\n4.2 Out of Scope (for this iteration)\n\nOCR for scanned/handwritten documents (can be listed as future work).\n\nMulti-tenant enterprise authentication/SSO (a simple login is sufficient for a class demo).\n\nFine-tuning a custom LLM — the project uses prompt engineering and RAG on top of an existing foundation model, not model training.\n\nReal-time collaborative multi-user editing of summaries.\n\n5. System Architecture",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_2017tfmh9",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 4,
+      "text": "EDIS follows a layered architecture. Each layer corresponds to one of the four required features, which makes the system easy to explain, demo, and grade section by section.\n\n5.1 High-Level Architecture Diagram\n\n[See Figure 1 — Architecture Diagram, provided as a separate image file: architecture-diagram.png]\n\n5.2 Layer-by-Layer Breakdown\n\nLayer 1 — Ingestion & Upload\n\nAccepts PDF (primary) and DOCX uploads for three document classes: Policies, Contracts, Reports.\n\nValidates file type/size, extracts raw text and basic metadata (title, page count, upload date, document class).\n\nSplits documents into overlapping chunks (recommended: 800–1000 tokens with ~150 token overlap) to preserve context across boundaries.\n\nGenerates vector embeddings for each chunk and stores them in a vector database",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_c5p5dfx55",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 4,
+      "text": "okens with ~150 token overlap) to preserve context across boundaries.\n\nGenerates vector embeddings for each chunk and stores them in a vector database alongside metadata (doc ID, category, page number).\n\nLayer 2 — RAG (Retrieval-Augmented Generation)\n\nOn a user question, embeds the query and performs a similarity search (top-k, e.g. k=5–8) against the vector store, optionally filtered by document category or specific document.\n\nRe-ranks retrieved chunks (optional but recommended for higher precision) and assembles a context window.\n\nSends the question + retrieved context to the LLM with an instruction to answer only from the provided context and to cite the source document and page.\n\nReturns the answer with inline citations, so every claim can be traced back to a specific document and page",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_as3awfrk3",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 4,
+      "text": "and to cite the source document and page.\n\nReturns the answer with inline citations, so every claim can be traced back to a specific document and page — critical for legal/compliance trust.\n\nLayer 3 — Prompt Engineering (Summarization)\n\nUses a library of structured, reusable prompt templates rather than ad-hoc prompting — one template per summary type (one-line, executive, section-by-section, risk-flagging).\n\nApplies techniques such as role-setting (“you are a senior contracts analyst”), explicit output schemas (JSON or fixed Markdown structure), few-shot examples for consistent tone, and chain-of-thought scratch reasoning that is discarded before the final answer is shown.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_64152cpr1",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 5,
+      "text": "Summaries are generated per-document and cached so they don’t need to be regenerated on every view.\n\nLayer 4 — Agent (Document Analyst)\n\nAn LLM agent with access to a defined toolset: search_documents, summarize_document, compare_documents, extract_clauses, get_metadata.\n\nGiven a compound instruction (e.g. “Find all contracts with an auto-renewal clause and summarize the risk for each”), the agent plans a sequence of tool calls, executes them, and synthesizes a final structured answer.\n\nThe agent uses a reasoning loop (think → act → observe → repeat) and stops when it has enough information to answer, or asks a clarifying question if the request is ambiguous.\n\nBonus Layer — Automatic Executive Summary Generation\n\nTriggered automatically whenever a new document is uploaded or an existing",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_y4vst68tp",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 5,
+      "text": "equest is ambiguous.\n\nBonus Layer — Automatic Executive Summary Generation\n\nTriggered automatically whenever a new document is uploaded or an existing one is updated.\n\nRuns the summarization prompt chain in the background and stores the result, optionally notifying the user once it is ready.\n\n6. Technology Stack\n\nThe stack below is a recommended, proven combination. Substitute any row with an equivalent tool your instructor prefers (e.g. OpenAI instead of Claude, FAISS instead of Chroma) — the architecture does not change.\n\nLayer\n\nRecommended Technology\n\nWhy\n\nFrontend / UI\n\nReact (Next.js) + Tailwind CSS\n\nFast to build, component-based, clean chat + dashboard UI\n\nBackend API\n\nPython — FastAPI\n\nAsync-friendly, ideal for AI/ML pipelines and streaming responses\n\nLLM Provider\n\nClaude",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_tfjts5kqu",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 5,
+      "text": "sed, clean chat + dashboard UI\n\nBackend API\n\nPython — FastAPI\n\nAsync-friendly, ideal for AI/ML pipelines and streaming responses\n\nLLM Provider\n\nClaude (Anthropic API)\n\nStrong reasoning, native tool-use/agent support, large context window\n\nEmbeddings\n\nVoyage AI / OpenAI text-embedding / Sentence-Transformers (local)\n\nHigh-quality semantic embeddings for retrieval\n\nVector Database\n\nChromaDB (local/dev) or Pinecone / Qdrant (cloud)\n\nChroma is free and ideal for a class project; Pinecone/Qdrant for scale\n\nDocument Parsing\n\nPyMuPDF (fitz) / pdfplumber\n\nReliable text + layout extraction from PDFs\n\nOrchestration\n\nLangChain or LlamaIndex (or custom lightweight pipeline)",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_d6o6xuguz",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 6,
+      "text": "Pre-built RAG and agent abstractions; speeds up development\n\nDatabase (metadata)\n\nPostgreSQL / SQLite\n\nStores document metadata, summaries, chat history\n\nDev / Build Environment\n\nAntigravity (agentic IDE)\n\nAgent-assisted, reproducible build process — unique differentiator\n\nDeployment (optional)\n\nDocker + Render / Railway / AWS\n\nContainerized, portable demo deployment\n\n7. Feature Deep Dive\n\n7.1 Upload Module\n\nSupports three document categories with category-specific metadata fields:\n\nCategory\n\nTypical Metadata Captured\n\nSpecial Handling\n\nPolicies\n\nPolicy ID, department, effective date, version\n\nDetect superseded versions; flag policy conflicts\n\nContracts\n\nParties, effective/expiry date, contract type\n\nExtract key clauses (termination, renewal, penalty)\n\nReports\n\nReport type, reporting",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_h1wgqznug",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 6,
+      "text": "flicts\n\nContracts\n\nParties, effective/expiry date, contract type\n\nExtract key clauses (termination, renewal, penalty)\n\nReports\n\nReport type, reporting period, author/department\n\nExtract KPIs/figures into structured tables where possible\n\n7.2 RAG Question Answering — Worked Example\n\nExample user query: “What is the notice period for terminating the vendor agreement with Company X?”\n\nQuery is embedded and matched against vector store, filtered to category = Contracts and document = “Company X Agreement.”\n\nTop 5 matching chunks are retrieved (e.g. clauses 7.1–7.4 covering termination).\n\nChunks + query are passed to the LLM with a strict instruction: “Answer using only the context below. If the answer is not present, say so. Cite the page number for every claim.”\n\nLLM returns: “The notice",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_jy5cvcllx",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 6,
+      "text": "truction: “Answer using only the context below. If the answer is not present, say so. Cite the page number for every claim.”\n\nLLM returns: “The notice period is 60 days (Section 7.2, p. 4).” — a precise, traceable answer instead of a generic summary.\n\n7.3 Prompt Engineering — Summarization Template Example\n\nRather than a single generic “summarize this” prompt, EDIS uses a structured template, e.g.:\n\nRole: You are a senior compliance analyst.\nTask: Summarize the attached [document_type] in the following structure:\n1. One-line purpose\n2. Key obligations / parties\n3. Critical dates and durations\n4. Risk flags (if any)\nConstraint: Do not infer facts not present in the document. Output as Markdown.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_k5pb9zqsm",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 7,
+      "text": "This structured, role-based, schema-constrained prompting produces consistent output regardless of which document is fed in — the core skill the “Prompt Engineering” feature is meant to demonstrate.\n\n7.4 Agent — Document Analyst Reasoning Loop\n\nExample compound instruction: “Which of our contracts auto-renew, and which one carries the highest financial penalty if we exit early?”\n\nAgent plans: (a) search all contracts for auto-renewal clauses, (b) for each match, extract the early-exit penalty, (c) compare penalties, (d) produce a ranked answer.\n\nAgent calls search_documents(category=\"contracts\", query=\"auto-renewal clause\").\n\nFor each returned document, agent calls extract_clauses(doc_id, clause_type=\"early termination penalty\").\n\nAgent compares extracted values internally, then calls a",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_27xgg18ft",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 7,
+      "text": "rned document, agent calls extract_clauses(doc_id, clause_type=\"early termination penalty\").\n\nAgent compares extracted values internally, then calls a final synthesis step to produce a ranked, cited answer.\n\nThis loop — plan, act, observe, repeat, synthesize — is what distinguishes an agent from a simple chatbot, and is the centerpiece of the project’s technical novelty.\n\n8. Data Model (Simplified Schema)\n\nEntity\n\nKey Fields\n\nDocument\n\ndoc_id, filename, category (policy/contract/report), upload_date, status, page_count\n\nChunk\n\nchunk_id, doc_id, page_number, text, embedding_vector\n\nSummary\n\nsummary_id, doc_id, type (one-line/executive/section), content, generated_at\n\nChatSession\n\nsession_id, user_id, created_at\n\nChatMessage\n\nmessage_id, session_id, role, content, cited_chunks,",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_qnmer6qoq",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 7,
+      "text": "utive/section), content, generated_at\n\nChatSession\n\nsession_id, user_id, created_at\n\nChatMessage\n\nmessage_id, session_id, role, content, cited_chunks, timestamp\n\nAgentTask\n\ntask_id, instruction, plan_steps, tool_calls_log, final_answer, status\n\n9. Implementation Roadmap\n\nA 6-phase build plan designed to be executed inside Antigravity, where each phase can be delegated as a discrete agent task with clear headings/outputs — ideal for showing a clean, reproducible build log during evaluation.\n\nPhase\n\nDeliverable\n\nKey Tasks\n\nPhase 1\n\nSetup & Ingestion\n\nWorking upload pipeline\n\nProject scaffold; PDF/DOCX parser; chunking; embedding; vector DB setup\n\nPhase 2\n\nRAG Core\n\nWorking Q&A on one document",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_0jrt8o6sg",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 8,
+      "text": "Retrieval pipeline; prompt template for grounded QA; citation formatting\n\nPhase 3\n\nPrompt Engineering\n\nReliable summarization\n\nTemplate library (one-line / executive / section); output schema validation\n\nPhase 4\n\nAgent Layer\n\nMulti-step analyst agent\n\nTool definitions; reasoning loop; multi-doc comparison logic\n\nPhase 5\n\nUI & Integration\n\nEnd-to-end demo app\n\nUpload UI; chat UI; summary viewer; agent task viewer\n\nPhase 6\n\nBonus + Polish\n\nAuto-executive-summary + docs\n\nBackground job trigger; testing; this implementation report; demo script\n\n10. Evaluation & Testing Strategy\n\n10.1 RAG Quality Metrics\n\nRetrieval precision: are the retrieved chunks actually relevant to the query? (manual spot-check on a test set of 20–30 Q&A pairs)\n\nFaithfulness: does the generated answer only use facts",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_v9pzrwgi7",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 8,
+      "text": "ed chunks actually relevant to the query? (manual spot-check on a test set of 20–30 Q&A pairs)\n\nFaithfulness: does the generated answer only use facts present in the retrieved context (no hallucination)?\n\nCitation accuracy: does the cited page/section actually contain the claimed information?\n\n10.2 Summarization Quality\n\nStructure compliance: does every summary follow the defined schema (sections present, correct format)?\n\nCompleteness vs. conciseness: does the summary capture all critical obligations/dates without padding?\n\n10.3 Agent Reliability\n\nTask success rate across a fixed set of 10–15 compound test instructions of increasing complexity.\n\nTool-call correctness: does the agent call the right tool with the right arguments at each step?\n\nGraceful failure: does the agent ask for",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_datstgzte",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 8,
+      "text": "omplexity.\n\nTool-call correctness: does the agent call the right tool with the right arguments at each step?\n\nGraceful failure: does the agent ask for clarification instead of guessing when an instruction is ambiguous?\n\n10.4 System-Level Testing\n\nUpload validation (file type/size limits, corrupted file handling).\n\nLoad testing with a realistic document set (recommend 50–100 sample PDFs for the class demo corpus).\n\nEnd-to-end demo script rehearsal covering all four features plus the bonus feature.\n\n11. Risks & Mitigations\n\nRisk\n\nImpact\n\nMitigation\n\nLLM hallucination in answers\n\nHigh — erodes trust, especially for legal/compliance use",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_ohksnw91x",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 9,
+      "text": "Strict “context-only” prompting; mandatory citations; faithfulness checks\n\nPoor PDF text extraction (scanned/complex layouts)\n\nMedium — missing or garbled chunks\n\nUse robust parser (PyMuPDF); flag low-confidence extractions; OCR as future work\n\nChunking breaks context across clause boundaries\n\nMedium — incomplete answers\n\nOverlapping chunks; section-aware chunking using headings where possible\n\nAgent gets stuck in a reasoning loop / calls wrong tool\n\nMedium — incorrect or incomplete answers\n\nMax iteration limit; explicit tool schemas; fallback to direct RAG answer\n\nAPI cost/rate limits during demo\n\nLow–Medium — demo disruption\n\nCache summaries; use a small, fixed demo corpus; have an offline fallback recording\n\nSensitive document content (contracts/policies)\n\nMedium —",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110554_cjdwjbe1e",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 9,
+      "text": "uption\n\nCache summaries; use a small, fixed demo corpus; have an offline fallback recording\n\nSensitive document content (contracts/policies)\n\nMedium — privacy/confidentiality\n\nUse synthetic/sample documents for the class demo, not real organizational data\n\n12. Differentiation — Why This Stands Out\n\nMost classmates building a “document chatbot” will submit a single RAG loop: upload → embed → chat. EDIS is differentiated on four concrete axes:\n\nLayered architecture, not a single loop. RAG, prompt engineering, and agentic reasoning are implemented and demoed as three separable, individually testable layers — mirroring how real enterprise AI platforms (e.g. legal-tech and compliance-tech products) are actually built.\n\nA genuine agent, not just a chatbot. The Document Analyst plans and executes",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110555_pkeyulnnq",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 9,
+      "text": "forms (e.g. legal-tech and compliance-tech products) are actually built.\n\nA genuine agent, not just a chatbot. The Document Analyst plans and executes multi-step tool-calling tasks (compare across documents, extract clauses, rank by risk) — well beyond single-turn Q&A.\n\nDomain specificity. Built explicitly around three real enterprise document types (policies, contracts, reports) with category-aware metadata and extraction logic, not a generic “any PDF” demo.\n\nBuilt with Antigravity. The build process itself is agent-assisted and reproducible, giving you a unique, demonstrable development story for evaluation — not just the final app.",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110555_vw3geymbu",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 10,
+      "text": "Automatic executive summaries (bonus). A background job that proactively keeps leadership-ready summaries up to date — a feature with clear, tangible business value beyond the core requirements.\n\n13. Suggested Demo Script (For Class Presentation)\n\nUpload: Show 3–5 sample documents being uploaded (one policy, one contract, one report) and processed live.\n\nRAG Q&A: Ask 2–3 natural questions (“What is the termination notice period in the vendor contract?”) and show the cited, grounded answer.\n\nPrompt-engineered summary: Generate an executive summary of one document live and show the consistent structured output.\n\nAgent task: Issue one compound instruction (“Compare auto-renewal risk across all contracts”) and narrate the agent’s plan → tool calls → final answer.\n\nBonus: Upload a new document",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110555_pfilm4nmo",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 10,
+      "text": "instruction (“Compare auto-renewal risk across all contracts”) and narrate the agent’s plan → tool calls → final answer.\n\nBonus: Upload a new document and show the executive summary being generated automatically in the background without being asked.\n\nClose: Show the architecture diagram and the Antigravity build log as evidence of a structured, reproducible engineering process.\n\n14. Future Enhancements\n\nOCR support for scanned and handwritten documents.\n\nMulti-language document support.\n\nRole-based access control and full enterprise SSO integration.\n\nFine-tuned or distilled smaller model for cost-efficient summarization at scale.\n\nActive-learning feedback loop where user corrections improve retrieval ranking over time.\n\nIntegration with e-signature and contract lifecycle management (CLM)",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110555_n8zu1su0p",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 10,
+      "text": "arning feedback loop where user corrections improve retrieval ranking over time.\n\nIntegration with e-signature and contract lifecycle management (CLM) platforms.\n\n15. Conclusion",
+      "embedding": []
+    },
+    {
+      "id": "chunk_1782791110555_7rf9vey4y",
+      "docId": "doc_1782791110360",
+      "docName": "EDIS_Implementation_Plan.docx",
+      "page": 11,
+      "text": "The Enterprise Document Intelligence System turns an organization’s static PDF archive into an interactive, queryable knowledge base. By cleanly separating ingestion, retrieval-augmented question answering, prompt-engineered summarization, and agentic multi-step analysis into distinct, demonstrable layers — and by automating executive summaries as a bonus capability — the project meets every stated requirement while remaining clear enough to explain confidently in a viva or class presentation. Built and tracked using Antigravity, it also tells a strong story about engineering process, not just the final output, which is what will make it stand out among submissions in your class.",
+      "embedding": []
     }
   ],
   "chatSessions": [
@@ -195,6 +471,91 @@
     {
       "id": "session_1782756573269",
       "messages": []
+    },
+    {
+      "id": "session_1782791017915",
+      "messages": [
+        {
+          "id": "msg_user_1782791017929",
+          "role": "user",
+          "content": "What is a notice period?",
+          "timestamp": "2026-06-30T03:43:37.929Z"
+        },
+        {
+          "id": "msg_1782791017929",
+          "role": "assistant",
+          "content": "No relevant text sections were found in matching document databases to answer this question. Please make sure the documents are uploaded and processed successfully.",
+          "citations": [],
+          "timestamp": "2026-06-30T03:43:37.929Z"
+        }
+      ]
+    },
+    {
+      "id": "session_1782791201103",
+      "messages": [
+        {
+          "id": "msg_user_1782791201127",
+          "role": "user",
+          "content": "What are the main document categories in the system?",
+          "timestamp": "2026-06-30T03:46:41.127Z"
+        },
+        {
+          "id": "msg_1782791201127",
+          "role": "assistant",
+          "content": "###### System Answer (DEMO MODE - OFFLINE)\n\nBased on the retrieved document segments, here is the compiled information regarding **the queries you asked about**:\n\n* **Claim 1**: \"for newly uploaded or updated documents without user intervention.\"\n\n* **Claim 2**: \"Demonstrate the system end-to-end with a working demo, a reproducible Antigravity build log, and complete technical documentation (this report).\"\n\n* **Claim 3**: \"1 In Scope\n\nUpload and process PDF documents across three categories: Policies, Contracts, Reports.\"\n\n**Evaluation Cites:**\n- [Page 3] in *EDIS_Implementation_Plan.docx*: \"for newly uploaded or updated documents without user intervention.\n\nDemonstrate the system end-to-en...\"\n- [Page 6] in *EDIS_Implementation_Plan.docx*: \"Pre-built RAG and agent abstractions; speeds up development\n\nDatabase (metadata)\n\nPostgreSQL / SQLit...\"\n- [Page 1] in *Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf*: \"MEDICAL RETRIEVAL-AUGMENTED\nGENERATION SYSTEM FOR\nHEALTHCARE KNOWLEDGE ACCESS...\"\n- [Page 1] in *EDIS_Implementation_Plan.docx*: \"FINAL YEAR / MAJOR PROJECT\n\nEnterprise Document Intelligence System\n\nAn Agentic RAG Platform for Aut...\"\n- [Page 4] in *Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf*: \"he System Works\nUser Query → Semantic Search → Medical Knowledge Retrieval → AI-Powered Explanation\n...\"\n- [Page 5] in *EDIS_Implementation_Plan.docx*: \"Summaries are generated per-document and cached so they don’t need to be regenerated on every view.\n...\"\n- [Page 4] in *EDIS_Implementation_Plan.docx*: \"okens with ~150 token overlap) to preserve context across boundaries.\n\nGenerates vector embeddings f...\"\n- [Page 1] in *EDIS_Implementation_Plan.docx*: \"ents — policies, contracts, compliance reports, and financial statements — that are searched manuall...\"\n",
+          "citations": [
+            {
+              "docId": "doc_1782791110360",
+              "filename": "EDIS_Implementation_Plan.docx",
+              "page": 3,
+              "text": "for newly uploaded or updated documents without user intervention.\n\nDemonstrate the system end-to-end with a working demo, a reproducible Antigravity build log, and complete technical documentation (this report).\n\n4. Scope\n\n4.1 In Scope\n\nUpload and process PDF documents across three categories: Policies, Contracts, Reports.\n\nText extraction, chunking, embedding, and vector storage for semantic search.\n\nConversational question answering grounded in retrieved document chunks (RAG).\n\nPrompt-engineered summarization (whole-document and section-level).\n\nAn LLM-driven agent with tool access (retrieval tool, summarization tool, comparison tool, metadata tool).\n\nA web-based interface for upload, chat, and viewing generated summaries/reports.\n\nAutomatic executive summary generation as a"
+            },
+            {
+              "docId": "doc_1782791110360",
+              "filename": "EDIS_Implementation_Plan.docx",
+              "page": 6,
+              "text": "Pre-built RAG and agent abstractions; speeds up development\n\nDatabase (metadata)\n\nPostgreSQL / SQLite\n\nStores document metadata, summaries, chat history\n\nDev / Build Environment\n\nAntigravity (agentic IDE)\n\nAgent-assisted, reproducible build process — unique differentiator\n\nDeployment (optional)\n\nDocker + Render / Railway / AWS\n\nContainerized, portable demo deployment\n\n7. Feature Deep Dive\n\n7.1 Upload Module\n\nSupports three document categories with category-specific metadata fields:\n\nCategory\n\nTypical Metadata Captured\n\nSpecial Handling\n\nPolicies\n\nPolicy ID, department, effective date, version\n\nDetect superseded versions; flag policy conflicts\n\nContracts\n\nParties, effective/expiry date, contract type\n\nExtract key clauses (termination, renewal, penalty)\n\nReports\n\nReport type, reporting"
+            },
+            {
+              "docId": "doc_1782790080179",
+              "filename": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+              "page": 1,
+              "text": "MEDICAL RETRIEVAL-AUGMENTED\nGENERATION SYSTEM FOR\nHEALTHCARE KNOWLEDGE ACCESS"
+            },
+            {
+              "docId": "doc_1782791110360",
+              "filename": "EDIS_Implementation_Plan.docx",
+              "page": 1,
+              "text": "FINAL YEAR / MAJOR PROJECT\n\nEnterprise Document Intelligence System\n\nAn Agentic RAG Platform for Automated Policy, Contract, and Report Analysis\n\nImplementation Plan & Technical Blueprint\n\nDocument Version 1.0\n\nProject Title\n\nEnterprise Document Intelligence System\n\nCategory\n\nGenerative AI / Applied NLP / Agentic Systems\n\nCore Stack\n\nRAG + LLM Agent + Prompt Engineering Pipeline\n\nBuild Platform\n\nAntigravity (Agentic Dev Environment)\n\nPrepared For\n\nAcademic Submission / Final Year Project Evaluation\n\nStatus\n\nApproved for Implementation\n\nTable of Contents\n\n1. Executive Summary\n\nModern organizations accumulate thousands of unstructured PDF documents — policies, contracts, compliance reports, and financial statements — that are searched manually, read line by line, and summarized by hand. This"
+            },
+            {
+              "docId": "doc_1782790080179",
+              "filename": "Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+              "page": 4,
+              "text": "he System Works\nUser Query → Semantic Search → Medical Knowledge Retrieval → AI-Powered Explanation\nKey Innovation\nUnlike traditional AI chatbots, our system first retrieves\n relevant medical evidence and then generates answers based on that evidence,\n ensuring higher reliability and transparency."
+            },
+            {
+              "docId": "doc_1782791110360",
+              "filename": "EDIS_Implementation_Plan.docx",
+              "page": 5,
+              "text": "Summaries are generated per-document and cached so they don’t need to be regenerated on every view.\n\nLayer 4 — Agent (Document Analyst)\n\nAn LLM agent with access to a defined toolset: search_documents, summarize_document, compare_documents, extract_clauses, get_metadata.\n\nGiven a compound instruction (e.g. “Find all contracts with an auto-renewal clause and summarize the risk for each”), the agent plans a sequence of tool calls, executes them, and synthesizes a final structured answer.\n\nThe agent uses a reasoning loop (think → act → observe → repeat) and stops when it has enough information to answer, or asks a clarifying question if the request is ambiguous.\n\nBonus Layer — Automatic Executive Summary Generation\n\nTriggered automatically whenever a new document is uploaded or an existing"
+            },
+            {
+              "docId": "doc_1782791110360",
+              "filename": "EDIS_Implementation_Plan.docx",
+              "page": 4,
+              "text": "okens with ~150 token overlap) to preserve context across boundaries.\n\nGenerates vector embeddings for each chunk and stores them in a vector database alongside metadata (doc ID, category, page number).\n\nLayer 2 — RAG (Retrieval-Augmented Generation)\n\nOn a user question, embeds the query and performs a similarity search (top-k, e.g. k=5–8) against the vector store, optionally filtered by document category or specific document.\n\nRe-ranks retrieved chunks (optional but recommended for higher precision) and assembles a context window.\n\nSends the question + retrieved context to the LLM with an instruction to answer only from the provided context and to cite the source document and page.\n\nReturns the answer with inline citations, so every claim can be traced back to a specific document and page"
+            },
+            {
+              "docId": "doc_1782791110360",
+              "filename": "EDIS_Implementation_Plan.docx",
+              "page": 1,
+              "text": "ents — policies, contracts, compliance reports, and financial statements — that are searched manually, read line by line, and summarized by hand. This is slow, inconsistent, and error-prone, especially for legal and compliance-sensitive material.\n\nThe Enterprise Document Intelligence System (EDIS) is a full-stack AI platform that lets an organization upload its documents once and then interact with them intelligently: ask natural-language questions and receive grounded, cited answers; generate accurate summaries on demand; and deploy an autonomous “Document Analyst” agent that can plan and execute multi-step analysis tasks (e.g. “compare clause 4.2 across all vendor contracts and flag any with auto-renewal”).\n\nThe system is architected around four pillars that map directly to the four"
+            }
+          ],
+          "timestamp": "2026-06-30T03:46:41.127Z"
+        }
+      ]
     }
   ],
   "agentTasks": [
@@ -219,6 +580,134 @@
         }
       ],
       "finalAnswer": "#### Execution Failed\nPlease upload at least one document (contract, policy, or report) to let the Agent run comparison analysis."
+    },
+    {
+      "id": "task_1782791017937",
+      "instruction": "Compare contracts",
+      "status": "completed",
+      "logs": [
+        {
+          "step": 1,
+          "type": "thought",
+          "title": "Formulating Analytical Plan",
+          "detail": "User requested: \"Compare contracts\". I will parse local databases, find target files, execute similarity search across documents, and generate a synthesized comparison report.",
+          "timestamp": "2026-06-30T03:43:37.941Z"
+        },
+        {
+          "step": 2,
+          "type": "tool_call",
+          "title": "List Corpus Documents",
+          "detail": "Querying document database categories for Policies, Contracts, and Reports.",
+          "timestamp": "2026-06-30T03:43:38.951Z"
+        },
+        {
+          "step": 3,
+          "type": "observation",
+          "title": "Available Source Files",
+          "detail": "Located 1 documents: Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf",
+          "timestamp": "2026-06-30T03:43:40.169Z"
+        },
+        {
+          "step": 4,
+          "type": "tool_call",
+          "title": "Scan Document Chunks",
+          "detail": "Searching vector database index for concepts matching: \"Compare contracts\".",
+          "timestamp": "2026-06-30T03:43:41.182Z"
+        },
+        {
+          "step": 5,
+          "type": "observation",
+          "title": "Relevance Matrix Compiled",
+          "detail": "Completed similarity scan. Matching documents: Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf.",
+          "timestamp": "2026-06-30T03:43:42.395Z"
+        },
+        {
+          "step": 6,
+          "type": "tool_call",
+          "title": "Extract Active Clauses",
+          "detail": "Extracting parameters: [Auto-Renewal Clause terms, Liability cap sizes, Payment schedules].",
+          "timestamp": "2026-06-30T03:43:43.408Z"
+        },
+        {
+          "step": 7,
+          "type": "thought",
+          "title": "Synthesizing Comparison Metrics",
+          "detail": "Drafting final output summary table and recommendation guidelines.",
+          "timestamp": "2026-06-30T03:43:44.623Z"
+        },
+        {
+          "step": 8,
+          "type": "thought",
+          "title": "Task Finalized",
+          "detail": "Analyst findings compiled, verified, and complete.",
+          "timestamp": "2026-06-30T03:43:45.634Z"
+        }
+      ],
+      "finalAnswer": "### 📋 Autonomous Agent Document Analysis Report\n**Analyzed Instruction**: *\"Compare contracts\"*\n**Execution Mode**: Offline Sandbox / Mock Mode\n**Analyzed Corpus**: 1 Documents.\n\n#### Key Parameters Extracted\n\n| Document Name | Document Category | Auto-Renewal Active? | Notice Deadline | Risk Exposure Level |\n|:---|:---|:---|:---|:---|\n| **Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf** | REPORT | YES (Auto-extensions) | 60 Days | 🔴 High (Locked terms) |\n\n\n### Analytical Synthesis & Recommendations\n1. **Notice Alert**: Ensure written termination cancellations are submitted at least **60 days prior** for documents containing automatic renew properties.\n2. **Review Advisory**: Check the liability thresholds of all contracts flagged above. We recommend negotiating a hard cap equivalent to 100% of standard fees paid.\n3. **Continuous Tracking**: Add monitoring to prevent auto-renewal dates from slipping past.\n\n*Analysis generated automatically by EDIS Document Analyst Agent.*"
+    },
+    {
+      "id": "task_1782791201147",
+      "instruction": "Compare all uploaded documents",
+      "status": "completed",
+      "logs": [
+        {
+          "step": 1,
+          "type": "thought",
+          "title": "Formulating Analytical Plan",
+          "detail": "User requested: \"Compare all uploaded documents\". I will parse local databases, find target files, execute similarity search across documents, and generate a synthesized comparison report.",
+          "timestamp": "2026-06-30T03:46:41.152Z"
+        },
+        {
+          "step": 2,
+          "type": "tool_call",
+          "title": "List Corpus Documents",
+          "detail": "Querying document database categories for Policies, Contracts, and Reports.",
+          "timestamp": "2026-06-30T03:46:42.168Z"
+        },
+        {
+          "step": 3,
+          "type": "observation",
+          "title": "Available Source Files",
+          "detail": "Located 2 documents: Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf, EDIS_Implementation_Plan.docx",
+          "timestamp": "2026-06-30T03:46:43.371Z"
+        },
+        {
+          "step": 4,
+          "type": "tool_call",
+          "title": "Scan Document Chunks",
+          "detail": "Searching vector database index for concepts matching: \"Compare all uploaded documents\".",
+          "timestamp": "2026-06-30T03:46:44.386Z"
+        },
+        {
+          "step": 5,
+          "type": "observation",
+          "title": "Relevance Matrix Compiled",
+          "detail": "Completed similarity scan. Matching documents: Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf, EDIS_Implementation_Plan.docx.",
+          "timestamp": "2026-06-30T03:46:45.604Z"
+        },
+        {
+          "step": 6,
+          "type": "tool_call",
+          "title": "Extract Active Clauses",
+          "detail": "Extracting parameters: [Auto-Renewal Clause terms, Liability cap sizes, Payment schedules].",
+          "timestamp": "2026-06-30T03:46:46.620Z"
+        },
+        {
+          "step": 7,
+          "type": "thought",
+          "title": "Synthesizing Comparison Metrics",
+          "detail": "Drafting final output summary table and recommendation guidelines.",
+          "timestamp": "2026-06-30T03:46:47.824Z"
+        },
+        {
+          "step": 8,
+          "type": "thought",
+          "title": "Task Finalized",
+          "detail": "Analyst findings compiled, verified, and complete.",
+          "timestamp": "2026-06-30T03:46:48.836Z"
+        }
+      ],
+      "finalAnswer": "### 📋 Autonomous Agent Document Analysis Report\n**Analyzed Instruction**: *\"Compare all uploaded documents\"*\n**Execution Mode**: Offline Sandbox / Mock Mode\n**Analyzed Corpus**: 2 Documents.\n\n#### Key Parameters Extracted\n\n| Document Name | Document Category | Auto-Renewal Active? | Notice Deadline | Risk Exposure Level |\n|:---|:---|:---|:---|:---|\n| **Medical Retrieval-Augmented Generation System for Healthcare Knowledge Access.pdf** | REPORT | YES (Auto-extensions) | 60 Days | 🔴 High (Locked terms) |\n| **EDIS_Implementation_Plan.docx** | REPORT | NO (Direct expiry) | N/A | 🟢 Low (Standard) |\n\n\n### Analytical Synthesis & Recommendations\n1. **Notice Alert**: Ensure written termination cancellations are submitted at least **60 days prior** for documents containing automatic renew properties.\n2. **Review Advisory**: Check the liability thresholds of all contracts flagged above. We recommend negotiating a hard cap equivalent to 100% of standard fees paid.\n3. **Continuous Tracking**: Add monitoring to prevent auto-renewal dates from slipping past.\n\n*Analysis generated automatically by EDIS Document Analyst Agent.*"
     }
   ]
 }
